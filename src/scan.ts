@@ -1,23 +1,31 @@
+import { getAllowanceModuleDeployment } from '@safe-global/safe-modules-deployments';
 import {
   checkErc20Allowance,
   checkOperatorApproval,
+  checkSafeAllowanceDelegate,
+  checkSafeAllowanceToken,
   checkSafeModule,
   checkSafeOwner,
   type ChainReader,
 } from './analyzers.js';
 import { summarizeFindings, type ScanSummary } from './domain.js';
 
+export interface SafeAllowanceRequest {
+  module: string;
+  tokens: string[];
+}
+
 export interface ScanRequest {
   treasury: string;
   subject: string;
   safe: boolean;
+  safeAllowance?: SafeAllowanceRequest;
   erc20: string[];
   erc721: string[];
   erc1155: string[];
 }
 
 const ADDRESS = /^0x[a-fA-F0-9]{40}$/;
-
 function requireAddress(value: unknown, field: string): string {
   if (typeof value !== 'string' || !ADDRESS.test(value)) {
     throw new Error(`${field} must be a 20-byte hex address`);
@@ -31,6 +39,27 @@ function addressList(value: unknown, field: string): string[] {
   return value.map((entry, index) => requireAddress(entry, `${field}[${index}]`));
 }
 
+function resolveAllowanceModule(input: Record<string, unknown>): string {
+  if (input.module !== undefined) return requireAddress(input.module, 'safeAllowance.module');
+  if (typeof input.network !== 'string' || !/^\d+$/.test(input.network)) {
+    throw new Error('safeAllowance requires module or numeric network');
+  }
+  const deployment = getAllowanceModuleDeployment({ network: input.network });
+  const address = deployment?.networkAddresses?.[input.network];
+  if (!address) throw new Error(`no released Safe Allowance Module deployment for network ${input.network}`);
+  return requireAddress(address, 'safeAllowance.module');
+}
+
+function safeAllowance(value: unknown): SafeAllowanceRequest | undefined {
+  if (value === undefined) return undefined;
+  if (!value || typeof value !== 'object') throw new Error('safeAllowance must be an object');
+  const input = value as Record<string, unknown>;
+  return {
+    module: resolveAllowanceModule(input),
+    tokens: addressList(input.tokens, 'safeAllowance.tokens'),
+  };
+}
+
 export function parseScanRequest(value: unknown): ScanRequest {
   if (!value || typeof value !== 'object') throw new Error('scan request must be an object');
   const input = value as Record<string, unknown>;
@@ -38,6 +67,7 @@ export function parseScanRequest(value: unknown): ScanRequest {
     treasury: requireAddress(input.treasury, 'treasury'),
     subject: requireAddress(input.subject, 'subject'),
     safe: input.safe === undefined ? true : input.safe === true,
+    safeAllowance: safeAllowance(input.safeAllowance),
     erc20: addressList(input.erc20, 'erc20'),
     erc721: addressList(input.erc721, 'erc721'),
     erc1155: addressList(input.erc1155, 'erc1155'),
@@ -50,15 +80,15 @@ export async function runScan(reader: ChainReader, request: ScanRequest): Promis
     findings.push(await checkSafeOwner(reader, request.treasury, request.subject));
     findings.push(await checkSafeModule(reader, request.treasury, request.subject));
   }
-  for (const token of request.erc20) {
-    findings.push(await checkErc20Allowance(reader, token, request.treasury, request.subject));
+  if (request.safeAllowance) {
+    findings.push(await checkSafeAllowanceDelegate(reader, request.safeAllowance.module, request.treasury, request.subject));
+    for (const token of request.safeAllowance.tokens) {
+      findings.push(await checkSafeAllowanceToken(reader, request.safeAllowance.module, request.treasury, request.subject, token));
+    }
   }
-  for (const token of request.erc721) {
-    findings.push(await checkOperatorApproval(reader, 'erc721', token, request.treasury, request.subject));
-  }
-  for (const token of request.erc1155) {
-    findings.push(await checkOperatorApproval(reader, 'erc1155', token, request.treasury, request.subject));
-  }
+  for (const token of request.erc20) findings.push(await checkErc20Allowance(reader, token, request.treasury, request.subject));
+  for (const token of request.erc721) findings.push(await checkOperatorApproval(reader, 'erc721', token, request.treasury, request.subject));
+  for (const token of request.erc1155) findings.push(await checkOperatorApproval(reader, 'erc1155', token, request.treasury, request.subject));
   if (findings.length === 0) {
     return summarizeFindings([{ id: 'no-checks', status: 'unknown', path: 'scan', evidence: 'no supported checks selected' }]);
   }

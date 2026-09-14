@@ -23,3 +23,19 @@ describe('ViemChainReader', () => {
     await expect(reader.readContract({ address: SAFE, functionName: 'transfer' })).rejects.toThrow(/unsupported/i);
   });
 });
+
+
+describe('Allowance Module read ABI', () => {
+  it('allows getDelegates and getTokenAllowance read functions', async () => {
+    const calls: Array<Record<string, unknown>> = [];
+    const reader = new ViemChainReader({
+      async readContract(request: Record<string, unknown>) {
+        calls.push(request);
+        return request.functionName === 'getDelegates' ? [[], 0n] : [0n, 0n, 0n, 0n, 0n];
+      },
+    });
+    await reader.readContract({ address: SAFE, functionName: 'getDelegates', args: [SAFE, 0n, 100] });
+    await reader.readContract({ address: SAFE, functionName: 'getTokenAllowance', args: [SAFE, SAFE, SAFE] });
+    expect(calls.map((call) => call.functionName)).toEqual(['getDelegates', 'getTokenAllowance']);
+  });
+});

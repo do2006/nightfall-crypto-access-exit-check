@@ -64,3 +64,51 @@ export async function checkOperatorApproval(reader: ChainReader, standard: 'erc7
     return unknownFinding(`${standard}-operator:${token}`, path, error);
   }
 }
+
+export async function checkSafeAllowanceDelegate(
+  reader: ChainReader,
+  module: string,
+  safe: string,
+  subject: string,
+): Promise<Finding> {
+  const path = `safe:${safe}:allowance-module:${module}:delegate:${subject}`;
+  try {
+    const raw = await reader.readContract({ address: module, functionName: 'getDelegates', args: [safe, 0n, 100] });
+    if (!Array.isArray(raw) || !Array.isArray(raw[0])) throw new Error('unexpected getDelegates response');
+    const active = raw[0].some((delegate: unknown) => eq(delegate, subject));
+    return {
+      id: 'safe-allowance-delegate',
+      status: active ? 'active' : 'absent',
+      path,
+      evidence: active ? 'subject is an Allowance Module delegate' : 'subject is not an Allowance Module delegate',
+    };
+  } catch (error) {
+    return unknownFinding('safe-allowance-delegate', path, error);
+  }
+}
+
+export async function checkSafeAllowanceToken(
+  reader: ChainReader,
+  module: string,
+  safe: string,
+  subject: string,
+  token: string,
+): Promise<Finding> {
+  const path = `safe:${safe}:allowance-module:${module}:token:${token}:delegate:${subject}`;
+  try {
+    const raw = await reader.readContract({ address: module, functionName: 'getTokenAllowance', args: [safe, subject, token] });
+    if (!Array.isArray(raw) || raw.length !== 5 || raw.some((value) => typeof value !== 'bigint')) {
+      throw new Error('unexpected getTokenAllowance response');
+    }
+    const [amount, spent, resetPeriod] = raw as bigint[];
+    const active = amount > 0n && (spent < amount || resetPeriod > 0n);
+    return {
+      id: `safe-allowance-token:${token}`,
+      status: active ? 'active' : 'absent',
+      path,
+      evidence: `amount=${amount}; spent=${spent}; resetPeriod=${resetPeriod}; nonce=${raw[4]}`,
+    };
+  } catch (error) {
+    return unknownFinding(`safe-allowance-token:${token}`, path, error);
+  }
+}
