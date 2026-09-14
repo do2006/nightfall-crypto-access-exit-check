@@ -1,20 +1,16 @@
 {
   "name": "nightfall-crypto-access-exit-check",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "test": "test"
-  },
+  "version": "0.1.0",
+  "description": "Read-only crypto wallet offboarding residue scanner for Safe and token permissions",
   "scripts": {
-    "test": "vitest run",
+    "test": "vitest run test",
     "typecheck": "tsc --noEmit",
-    "build": "tsc"
+    "build": "tsc -p tsconfig.build.json",
+    "scan": "tsx src/cli.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["crypto", "security", "safe", "wallet", "revocation"],
+  "author": "NightFall Technologies",
+  "license": "UNLICENSED",
   "type": "module",
   "devDependencies": {
     "@types/node": "^26.5.1",
