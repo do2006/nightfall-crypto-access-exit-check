@@ -75,7 +75,9 @@ NightFall Technologies can run an authorized exit check and return a human-reada
 
 Introductory fixed price: **$49 per treasury / subject pair** for the supported v0.2 checks above.
 
-Contact: **dwayneoneill@nightfalltechnologies.com**
+**[Buy the $49 Crypto Access Exit Verification via PayPal](https://www.paypal.com/ncp/payment/WHEDRHSJN6TFJ)**
+
+After payment, send the public treasury address, subject address, relevant contract addresses, and authorized scope to **dwayneoneill@nightfalltechnologies.com**. Never send a seed phrase or private key.
 
 No seed phrase or private key is required. The customer provides only public addresses, relevant contract addresses, and authorization to assess the supplied scope.
 
