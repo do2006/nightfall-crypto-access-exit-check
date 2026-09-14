@@ -49,3 +49,21 @@ Introductory fixed price: **$49 per treasury / subject pair** for the supported 
 Contact: **dwayneoneill@nightfalltechnologies.com**
 
 No seed phrase or private key is required. The customer provides only public addresses, the relevant contract addresses, and authorization to assess the supplied scope.
+
+## Customer-ready Markdown output
+
+```powershell
+npm run scan -- --input request.json --rpc https://mainnet.base.org --format markdown
+```
+
+See `examples/base-usdc-smoke-report.md` for a live read-only Base/USDC example generated from public chain state.
+
+## Verification
+
+```powershell
+npm test -- --no-color
+npm run typecheck
+npm run build
+```
+
+CI runs the same verification on every push to `main` and on pull requests.

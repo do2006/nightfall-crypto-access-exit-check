@@ -1,6 +1,7 @@
 import { readFile as fsReadFile } from 'node:fs/promises';
 import type { ChainReader } from './analyzers.js';
 import { createRpcReader } from './rpc-reader.js';
+import { renderMarkdownReport } from './report.js';
 import { parseScanRequest, runScan } from './scan.js';
 
 export interface CliDeps {
@@ -23,10 +24,17 @@ export async function runCli(argv: string[], deps: CliDeps): Promise<void> {
   const raw = await deps.readFile(inputPath);
   const request = parseScanRequest(JSON.parse(raw));
   const report = await runScan(deps.createReader(rpcUrl), request);
+  const format = valueAfter(argv, '--format') ?? 'json';
+  if (format === 'markdown') {
+    deps.write(renderMarkdownReport(report, request.treasury, request.subject));
+    return;
+  }
+  if (format !== 'json') throw new Error('--format must be json or markdown');
   deps.write(`${JSON.stringify(report, null, 2)}\n`);
 }
 
-const isDirect = process.argv[1]?.replaceAll('\\', '/').endsWith('/src/cli.ts') || process.argv[1]?.replaceAll('\\', '/').endsWith('/dist/src/cli.js');
+const script = process.argv[1]?.replaceAll('\\', '/');
+const isDirect = script?.endsWith('/src/cli.ts') || script?.endsWith('/dist/cli.js');
 
 if (isDirect) {
   runCli(process.argv.slice(2), {
