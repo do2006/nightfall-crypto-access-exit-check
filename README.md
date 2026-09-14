@@ -6,6 +6,7 @@ Read-only verification that a former AI agent, bot, employee, or contractor no l
 
 - Safe owner membership
 - Safe enabled modules
+- Safe Allowance Module delegates and token spending limits
 - ERC-20 allowances
 - ERC-721 operator approvals
 - ERC-1155 operator approvals
@@ -22,9 +23,8 @@ The scanner never signs transactions, never requests private keys, and never mov
 
 ```powershell
 npm install
-npm exec -- tsx src/cli.ts --input examples/base-usdc-smoke.json --rpc https://mainnet.base.org
+npm run scan -- --input examples/base-usdc-smoke.json --rpc https://mainnet.base.org
 ```
-
 Input JSON:
 
 ```json
@@ -32,31 +32,38 @@ Input JSON:
   "treasury": "0x...",
   "subject": "0x...",
   "safe": true,
+  "safeAllowance": {
+    "network": "8453",
+    "tokens": ["0x..."]
+  },
   "erc20": ["0x..."],
   "erc721": [],
   "erc1155": []
 }
 ```
 
+For supported Safe deployments, `safeAllowance.network` resolves the released Allowance Module address from Safe's official deployment package. You may instead supply an explicit `safeAllowance.module` address.
+
 Only include contracts you are authorized to assess. Public-chain reads are non-custodial and read-only.
-
-## Paid verification report
-
-NightFall Technologies can run an authorized exit check and return a human-readable revocation report with the exact supported permission paths that remain, the checks that passed, and anything that could not be verified.
-
-Introductory fixed price: **$49 per treasury / subject pair** for the supported v1 checks above.
-
-Contact: **dwayneoneill@nightfalltechnologies.com**
-
-No seed phrase or private key is required. The customer provides only public addresses, the relevant contract addresses, and authorization to assess the supplied scope.
 
 ## Customer-ready Markdown output
 
 ```powershell
 npm run scan -- --input request.json --rpc https://mainnet.base.org --format markdown
 ```
+See:
+- `examples/base-usdc-smoke-report.md` for a live Base/USDC ERC-20 allowance example.
+- `examples/base-safe-allowance-smoke.json` for a live Base Safe Allowance Module example.
 
-See `examples/base-usdc-smoke-report.md` for a live read-only Base/USDC example generated from public chain state.
+## Paid verification report
+
+NightFall Technologies can run an authorized exit check and return a human-readable revocation report with the exact supported permission paths that remain, the checks that passed, and anything that could not be verified.
+
+Introductory fixed price: **$49 per treasury / subject pair** for the supported v0.2 checks above.
+
+Contact: **dwayneoneill@nightfalltechnologies.com**
+
+No seed phrase or private key is required. The customer provides only public addresses, relevant contract addresses, and authorization to assess the supplied scope.
 
 ## Verification
 
