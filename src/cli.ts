@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { readFile as fsReadFile } from 'node:fs/promises';
 import type { ChainReader } from './analyzers.js';
 import { createRpcReader } from './rpc-reader.js';
