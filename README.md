@@ -1,12 +1,26 @@
 # NightFall Crypto Access Exit Check
 
-Read-only verification that a former AI agent, bot, employee, or contractor no longer retains supported on-chain authority.
+**Prove that a former AI agent, bot, employee, or contractor is actually revoked.**
+
+Read-only wallet offboarding verification for supported Safe smart-account permissions and token approvals. The scanner reports exactly which supported permission paths remain, which checks passed, and which checks could not be verified.
+
+[![npm](https://img.shields.io/npm/v/nightfall-crypto-access-exit-check)](https://www.npmjs.com/package/nightfall-crypto-access-exit-check)
+[![GitHub release](https://img.shields.io/github/v/release/do2006/nightfall-crypto-access-exit-check)](https://github.com/do2006/nightfall-crypto-access-exit-check/releases)
 
 ## Need a verified exit report now?
 
 **[Buy the $49 Crypto Access Exit Verification via PayPal](https://www.paypal.com/ncp/payment/WHEDRHSJN6TFJ)**
 
-You receive a human-readable report showing supported permission paths that remain, checks that passed, and anything that could not be verified. No seed phrase or private key is required. After payment, send the public treasury address, subject address, relevant contract addresses, and authorized scope to **dwayneoneill@nightfalltechnologies.com**.
+You receive a human-readable report for one treasury / subject pair covering the supported checks below. No seed phrase or private key is required.
+
+After payment, send the public treasury address, subject address, relevant contract addresses, and authorized scope to **dwayneoneill@nightfalltechnologies.com**.
+
+## Who this is for
+
+- Teams offboarding AI agents, bots, employees, contractors, or automation accounts
+- Safe smart-account and treasury operators
+- Wallet-security, account-abstraction, and Web3 engineering teams
+- Security or finance leads who need evidence that supported on-chain permissions were actually removed
 
 ## What it checks
 
@@ -19,21 +33,25 @@ You receive a human-readable report showing supported permission paths that rema
 
 The scanner never signs transactions, never requests private keys, and never moves funds.
 
+## Why this exists
+
+Removing a signer or disabling an account is not always the same as removing every permission that address received. A departing subject may have authority through a separate Safe module, allowance, token approval, or other supported on-chain path.
+
+This project focuses specifically on **post-revocation verification**: after the offboarding procedure is supposed to be finished, what supported authority still remains?
+
 ## Verdicts
 
-- `revoked` — every selected check is absent
-- `residual_access_found` — at least one selected permission remains
-- `unable_to_verify` — at least one selected check could not be verified and none showed residual access
+- `revoked` Ã¢â‚¬â€ every selected supported check is absent
+- `residual_access_found` Ã¢â‚¬â€ at least one selected supported permission remains
+- `unable_to_verify` Ã¢â‚¬â€ at least one selected check could not be verified and none showed residual access
+
+Unknown or unverifiable checks fail closed to `unable_to_verify`; they do not produce a reassuring green result.
 
 ## Install and run
-
-Install from npm:
 
 ```powershell
 npm install nightfall-crypto-access-exit-check
 ```
-
-Run the published CLI:
 
 ```powershell
 npx nightfall-crypto-exit-check --input request.json --rpc https://mainnet.base.org --format markdown
@@ -68,24 +86,13 @@ Only include contracts you are authorized to assess. Public-chain reads are non-
 
 ## Customer-ready Markdown output
 
-```powershell
-npm run scan -- --input request.json --rpc https://mainnet.base.org --format markdown
-```
 See:
-- `examples/base-usdc-smoke-report.md` for a live Base/USDC ERC-20 allowance example.
-- `examples/base-safe-allowance-smoke.json` for a live Base Safe Allowance Module example.
+- `examples/base-usdc-smoke-report.md` for a live Base/USDC ERC-20 allowance example
+- `examples/base-safe-allowance-smoke-report.md` for a live Base Safe Allowance Module example
 
-## Paid verification report
+## Need a broader security architecture review?
 
-NightFall Technologies can run an authorized exit check and return a human-readable revocation report with the exact supported permission paths that remain, the checks that passed, and anything that could not be verified.
-
-Introductory fixed price: **$49 per treasury / subject pair** for the supported v0.2 checks above.
-
-**[Buy the $49 Crypto Access Exit Verification via PayPal](https://www.paypal.com/ncp/payment/WHEDRHSJN6TFJ)**
-
-After payment, send the public treasury address, subject address, relevant contract addresses, and authorized scope to **dwayneoneill@nightfalltechnologies.com**. Never send a seed phrase or private key.
-
-No seed phrase or private key is required. The customer provides only public addresses, relevant contract addresses, and authorization to assess the supplied scope.
+NightFall Technologies also offers a fixed-scope **Security Architecture Risk Sprint** for SaaS, AI, fintech, infrastructure, and technology teams: https://www.nightfalltechnologies.com/services/security-architecture-sprint
 
 ## Verification
 

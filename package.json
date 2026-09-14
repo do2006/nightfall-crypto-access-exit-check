@@ -1,7 +1,7 @@
 {
   "name": "nightfall-crypto-access-exit-check",
-  "version": "0.2.3",
-  "description": "Read-only crypto wallet offboarding residue scanner for Safe and token permissions",
+  "version": "0.2.4",
+  "description": "Read-only crypto wallet offboarding and access-revocation verifier for Safe smart accounts, AI agents, and token approvals",
   "type": "module",
   "main": "./dist/cli.js",
   "bin": {
@@ -26,15 +26,21 @@
     "safe-wallet",
     "wallet",
     "wallet-security",
+    "wallet-offboarding",
     "smart-account",
     "account-abstraction",
     "offboarding",
     "revocation",
     "access-control",
+    "permission-audit",
+    "treasury-security",
+    "agent-wallet",
+    "ai-agent",
+    "safe-module",
+    "token-approval",
     "erc20",
     "erc721",
-    "erc1155",
-    "ai-agent"
+    "erc1155"
   ],
   "author": "NightFall Technologies",
   "license": "UNLICENSED",
