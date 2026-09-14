@@ -2,6 +2,12 @@
 
 Read-only verification that a former AI agent, bot, employee, or contractor no longer retains supported on-chain authority.
 
+## Need a verified exit report now?
+
+**[Buy the $49 Crypto Access Exit Verification via PayPal](https://www.paypal.com/ncp/payment/WHEDRHSJN6TFJ)**
+
+You receive a human-readable report showing supported permission paths that remain, checks that passed, and anything that could not be verified. No seed phrase or private key is required. After payment, send the public treasury address, subject address, relevant contract addresses, and authorized scope to **dwayneoneill@nightfalltechnologies.com**.
+
 ## What it checks
 
 - Safe owner membership
