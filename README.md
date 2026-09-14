@@ -21,6 +21,20 @@ The scanner never signs transactions, never requests private keys, and never mov
 
 ## Install and run
 
+Install from npm:
+
+```powershell
+npm install nightfall-crypto-access-exit-check
+```
+
+Run the published CLI:
+
+```powershell
+npx nightfall-crypto-exit-check --input request.json --rpc https://mainnet.base.org --format markdown
+```
+
+Repository development mode:
+
 ```powershell
 npm install
 npm run scan -- --input examples/base-usdc-smoke.json --rpc https://mainnet.base.org

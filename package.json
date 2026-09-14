@@ -5,7 +5,7 @@
   "type": "module",
   "main": "./dist/cli.js",
   "bin": {
-    "nightfall-crypto-exit-check": "./dist/cli.js"
+    "nightfall-crypto-exit-check": "dist/cli.js"
   },
   "files": [
     "dist/",
