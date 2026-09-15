@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent Wallet Offboarding Checklist | NightFall Technologies</title>
+<meta name="description" content="A practical checklist for revoking and verifying AI-agent, bot, employee, contractor, and automation-account access to crypto wallets, Safe smart accounts, and token approvals.">
+<link rel="canonical" href="https://do2006.github.io/nightfall-crypto-access-exit-check/ai-agent-wallet-offboarding-checklist.html">
+<style>body{max-width:860px;margin:0 auto;padding:32px 22px;background:#080a0f;color:#edf1f5;font-family:system-ui,Segoe UI,Arial;line-height:1.65}a{color:#ff6965}h1{font-size:clamp(2.2rem,6vw,4rem);line-height:1.02}h2{margin-top:34px}.note{padding:18px;border:1px solid #28303d;background:#111722;border-radius:12px}.cta{display:inline-block;margin:8px 8px 8px 0;padding:12px 16px;background:#d93632;color:white;text-decoration:none;border-radius:9px;font-weight:700}code{color:#ffaaa7}</style>
+</head><body>
+<p><a href="./">← NightFall Crypto Access Exit Check</a></p>
+<h1>AI Agent Wallet Offboarding Checklist</h1>
+<p>Removing an AI agent, bot, employee, contractor, or automation account from one signer list does not prove that every supported permission path has disappeared. Use this checklist after the intended revocation procedure is complete.</p>
+<h2>1. Confirm owner or signer removal</h2>
+<p>Check whether the departing address is still an owner or signer of the treasury or smart account. For Safe accounts, verify current owner membership against live chain state.</p>
+<h2>2. Inspect enabled modules</h2>
+<p>Modules can create authority paths separate from ordinary owner signatures. Record every enabled module and determine whether the departing subject can still act through one.</p>
+<h2>3. Check delegated spending limits</h2>
+<p>If Safe Allowance Module or another delegated-spend mechanism was used, confirm the subject is no longer a delegate and that token spending limits are zero or removed.</p>
+<h2>4. Review token approvals</h2>
+<p>Inspect ERC-20 allowances and ERC-721/ERC-1155 operator approvals granted to the departing address. Approval state is independent of whether the address is still a wallet owner.</p>
+<h2>5. Treat unknown paths as unverified</h2>
+<p>Do not turn missing data into a green check. Unsupported modules, unavailable RPC state, or unknown delegation mechanisms should produce an explicit <code>unable_to_verify</code> result.</p>
+<h2>6. Save evidence</h2>
+<p>Record the treasury, subject, chain, contracts checked, observed state, block context, and final verdict. Offboarding should be provable after the fact, not dependent on someone remembering what buttons were clicked.</p>
+<div class="note"><strong>NightFall Crypto Access Exit Check</strong> automates supported read-only checks for Safe owners, enabled modules, Safe Allowance Module delegates/spending limits, and ERC-20/721/1155 approvals. It never requests private keys, signs transactions, or moves funds.</div>
+<p><a class="cta" href="https://www.paypal.com/ncp/payment/WHEDRHSJN6TFJ">Buy a verified exit report — $49</a><a class="cta" href="https://github.com/do2006/nightfall-crypto-access-exit-check">Run the open-source tool</a></p>
+<h2>For broader architecture risk</h2>
+<p>If the problem extends beyond one wallet or agent, NightFall Technologies offers a fixed-price <a href="https://www.nightfalltechnologies.com/services/security-architecture-sprint">Security Architecture Risk Sprint</a>.</p>
+<footer><p>NightFall Technologies · dwayneoneill@nightfalltechnologies.com</p></footer>
+</body></html>

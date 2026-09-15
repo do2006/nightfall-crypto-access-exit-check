@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://do2006.github.io/nightfall-crypto-access-exit-check/sitemap.xml
